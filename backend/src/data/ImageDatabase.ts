@@ -41,4 +41,14 @@ export class ImageDatabase extends BaseDatabase {
 
     return Image.toImageModel(result[0]);
   }
+
+  public async getAllImages(): Promise<Image[]> {
+    const result = await this.getConnection()
+      .select("*")
+      .from(ImageDatabase.TABLE_NAME);
+
+    console.log(result);
+
+    return result[0];
+  }
 }

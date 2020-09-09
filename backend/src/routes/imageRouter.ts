@@ -7,3 +7,4 @@ const imageController = new ImageController();
 
 imageRouter.post("/create", imageController.createImage);
 imageRouter.get("/:id", imageController.getImageById);
+imageRouter.get("/feed", imageController.getAllImages);

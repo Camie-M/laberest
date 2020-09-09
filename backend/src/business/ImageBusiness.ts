@@ -49,4 +49,12 @@ export class ImageBusiness {
 
     return findImage;
   }
+
+  async getAllImages() {
+    const getFeed = await this.imageDatabase.getAllImages();
+
+    console.log(getFeed);
+
+    return getFeed;
+  }
 }

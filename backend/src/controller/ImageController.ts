@@ -41,6 +41,14 @@ export class ImageController {
 
   public async getImageById(req: Request, res: Response) {
     try {
+      const token = req.headers.authorization as string;
+
+      const authenticator = new Authenticator();
+      const authenticationData = authenticator.getData(token);
+
+      if (!authenticationData) {
+        throw new Error("Token unanthorized");
+      }
       const userInput: string = req.params.id;
 
       const result = await ImageController.ImageBusiness.getImageById(
@@ -49,6 +57,30 @@ export class ImageController {
 
       if (!result) {
         throw new NotFoundError("Image not found");
+      }
+      res.status(200).send(result);
+    } catch (error) {
+      res.status(error.errorCode || 400).send({ message: error.message });
+    }
+  }
+
+  public async getAllImages(req: Request, res: Response) {
+    try {
+      const token = req.headers.authorization as string;
+
+      const authenticator = new Authenticator();
+      const authenticationData = authenticator.getData(token);
+
+      if (!authenticationData) {
+        throw new Error("Token unanthorized");
+      }
+
+      const result = await ImageController.ImageBusiness.getAllImages();
+
+      console.log(result);
+
+      if (!result) {
+        throw new NotFoundError("Feed not found");
       }
       res.status(200).send(result);
     } catch (error) {
