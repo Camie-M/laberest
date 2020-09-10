@@ -46,9 +46,6 @@ export class ImageDatabase extends BaseDatabase {
     const result = await this.getConnection()
       .select("*")
       .from(ImageDatabase.TABLE_NAME);
-
-    console.log(result);
-
     return result[0];
   }
 }

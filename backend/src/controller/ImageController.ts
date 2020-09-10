@@ -77,8 +77,6 @@ export class ImageController {
 
       const result = await ImageController.ImageBusiness.getAllImages();
 
-      console.log(result);
-
       if (!result) {
         throw new NotFoundError("Feed not found");
       }
