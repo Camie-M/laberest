@@ -8,33 +8,25 @@ import moment from "moment";
 export class ImageBusiness {
   constructor(
     private imageDatabase: ImageDatabase,
-    private idGenerator: IdGenerator,
-    private authenticator: Authenticator
+    private idGenerator: IdGenerator
   ) {}
 
   async createImage(image: ImageInputDTO) {
-    if (
-      !image.subtitle ||
-      !image.author ||
-      !image.file ||
-      !image.tags ||
-      !image.collection
-    ) {
+    if (!image.subtitle || !image.author || !image.file || !image.collection) {
       throw new InvalidParameterError("Missing input");
     }
 
-    const id = this.idGenerator.generate();
+    const imageId = this.idGenerator.generate();
 
-    const dateNow = moment().format("YYYY-MM-DD");
+    const dateNow = moment().format("YYYY-MM-DD HH:mm");
 
     await this.imageDatabase.createImage(
       new Image(
-        id,
+        imageId,
         image.subtitle,
         image.author,
         dateNow,
         image.file,
-        image.tags,
         image.collection
       )
     );

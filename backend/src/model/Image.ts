@@ -7,7 +7,6 @@ export class Image {
     private author: string,
     private date: string,
     private file: string,
-    private tags: string[],
     private collection: string
   ) {}
 
@@ -29,10 +28,6 @@ export class Image {
 
   getFile() {
     return this.file;
-  }
-
-  getTags() {
-    return this.tags;
   }
 
   getCollection() {
@@ -59,10 +54,6 @@ export class Image {
     this.file = file;
   }
 
-  setTags(tags: string[]) {
-    this.tags = tags;
-  }
-
   setCollection(collection: string) {
     this.collection = collection;
   }
@@ -74,7 +65,6 @@ export class Image {
       image.author,
       image.date,
       image.file,
-      image.tags,
       image.collection
     );
   }
@@ -84,6 +74,5 @@ export interface ImageInputDTO {
   subtitle: string;
   author: string;
   file: string;
-  tags: string[];
   collection: string;
 }
