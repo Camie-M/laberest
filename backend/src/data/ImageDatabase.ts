@@ -1,5 +1,5 @@
 import { BaseDatabase } from "./BaseDatabase";
-import { Image } from "../model/Image";
+import { Image, ImageInputDTO } from "../model/Image";
 
 export class ImageDatabase extends BaseDatabase {
   private static TABLE_NAME = "LABEREST_IMAGES";
@@ -13,7 +13,6 @@ export class ImageDatabase extends BaseDatabase {
         dbModel.author,
         dbModel.date,
         dbModel.file,
-        dbModel.tags,
         dbModel.collection
       )
     );
@@ -27,7 +26,6 @@ export class ImageDatabase extends BaseDatabase {
         author: image.getAuthor(),
         date: image.getDate(),
         file: image.getFile(),
-        tags: image.getTags(),
         collection: image.getCollection(),
       })
       .into(ImageDatabase.TABLE_NAME);
@@ -40,5 +38,12 @@ export class ImageDatabase extends BaseDatabase {
       .where({ id });
 
     return Image.toImageModel(result[0]);
+  }
+
+  public async getAllImages(): Promise<Image[]> {
+    const result = await this.getConnection()
+      .select("*")
+      .from(ImageDatabase.TABLE_NAME);
+    return result;
   }
 }
