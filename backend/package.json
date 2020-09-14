@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "start": "tsc && node ./build/src/index.ts",
+    "start": "tsc && node ./build/src/index.js",
     "build": "tsc"
   },
   "author": "Camila Moura",

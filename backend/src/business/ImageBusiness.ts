@@ -1,7 +1,6 @@
 import { ImageInputDTO, Image } from "../model/Image";
 import { ImageDatabase } from "../data/ImageDatabase";
 import { IdGenerator } from "../services/IdGenerator";
-import { Authenticator } from "../services/Authenticator";
 import { InvalidParameterError } from "../error/InvalidParameterError";
 import moment from "moment";
 

@@ -38,6 +38,16 @@ export class HashtagBusiness {
     return findTag;
   }
 
+  async getHashtagId(id: string) {
+    if (!id) {
+      throw new InvalidParameterError("Missing input");
+    }
+
+    const findTagId = await this.hashtagDatabase.getHashtagByName(name);
+
+    return findTagId;
+  }
+
   async getAllHashtags() {
     const getHashtags = await this.hashtagDatabase.getAllHashtags();
     return getHashtags;

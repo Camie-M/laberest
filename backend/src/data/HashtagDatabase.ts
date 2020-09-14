@@ -18,10 +18,10 @@ export class HashtagDatabase extends BaseDatabase {
       const tagsArray: string[] = tag.getNames();
 
       for (let item of tagsArray) {
-        const id = generateId.generate();
+        const tagId = generateId.generate();
 
         await knex
-          .insert({ id: id, name: item })
+          .insert({ id: tagId, name: item })
           .into(HashtagDatabase.TABLE_NAME);
       }
     } catch (error) {
@@ -41,6 +41,15 @@ export class HashtagDatabase extends BaseDatabase {
   public async getHashtagByName(name: string): Promise<string> {
     const result = await this.getConnection()
       .select("name")
+      .from(HashtagDatabase.TABLE_NAME)
+      .where({ name });
+
+    return result[0];
+  }
+
+  public async getHashtagId(name: string): Promise<string> {
+    const result = await this.getConnection()
+      .select("id")
       .from(HashtagDatabase.TABLE_NAME)
       .where({ name });
 
