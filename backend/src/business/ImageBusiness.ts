@@ -12,7 +12,7 @@ export class ImageBusiness {
   ) {}
 
   async createImage(image: ImageInputDTO) {
-    if (!image.subtitle || !image.author || !image.file || !image.collection) {
+    if (!image.subtitle || !image.author || !image.file) {
       throw new InvalidParameterError("Missing input");
     }
 
@@ -21,14 +21,7 @@ export class ImageBusiness {
     const dateNow = moment().format("YYYY-MM-DD HH:mm");
 
     await this.imageDatabase.createImage(
-      new Image(
-        imageId,
-        image.subtitle,
-        image.author,
-        dateNow,
-        image.file,
-        image.collection
-      )
+      new Image(imageId, image.subtitle, image.author, dateNow, image.file)
     );
   }
 
@@ -45,5 +38,17 @@ export class ImageBusiness {
   async getAllImages() {
     const getFeed = await this.imageDatabase.getAllImages();
     return getFeed;
+  }
+
+  async getAllImagesByDate() {
+    const getFeedByDate = await this.imageDatabase.getAllImagesByDate();
+    return getFeedByDate;
+  }
+
+  async getAllImagesByAuthor(author: string) {
+    const getFeedByAuthor = await this.imageDatabase.getAllImagesByAuthor(
+      author
+    );
+    return getFeedByAuthor;
   }
 }

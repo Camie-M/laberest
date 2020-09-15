@@ -1,9 +1,7 @@
 import { HashtagsArrInputDTO, HashtagsArray } from "../model/HashtagsArray";
 import { HashtagDatabase } from "../data/HashtagDatabase";
 import { IdGenerator } from "../services/IdGenerator";
-import { Authenticator } from "../services/Authenticator";
 import { InvalidParameterError } from "../error/InvalidParameterError";
-import { hash } from "bcryptjs";
 
 export class HashtagBusiness {
   constructor(

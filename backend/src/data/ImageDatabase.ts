@@ -12,8 +12,7 @@ export class ImageDatabase extends BaseDatabase {
         dbModel.subtitle,
         dbModel.author,
         dbModel.date,
-        dbModel.file,
-        dbModel.collection
+        dbModel.file
       )
     );
   }
@@ -26,7 +25,6 @@ export class ImageDatabase extends BaseDatabase {
         author: image.getAuthor(),
         date: image.getDate(),
         file: image.getFile(),
-        collection: image.getCollection(),
       })
       .into(ImageDatabase.TABLE_NAME);
   }
@@ -44,6 +42,23 @@ export class ImageDatabase extends BaseDatabase {
     const result = await this.getConnection()
       .select("*")
       .from(ImageDatabase.TABLE_NAME);
+    return result;
+  }
+
+  public async getAllImagesByDate(): Promise<Image[]> {
+    const result = await this.getConnection().raw(`
+    SELECT * FROM LABEREST_IMAGES
+    ORDER BY date DESC 
+    `);
+    return result;
+  }
+
+  public async getAllImagesByAuthor(author: string): Promise<Image[]> {
+    const result = await this.getConnection().raw(`
+    SELECT * FROM LABEREST_IMAGES
+    WHERE author = "${author}"
+    ORDER BY date DESC 
+    `);
     return result;
   }
 }
