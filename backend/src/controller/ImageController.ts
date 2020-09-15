@@ -8,6 +8,9 @@ import { NotFoundError } from "../error/NotFoundError";
 import { HashtagsArrInputDTO } from "../model/HashtagsArray";
 import { HashtagBusiness } from "../business/HashtagBusiness";
 import { HashtagDatabase } from "../data/HashtagDatabase";
+import { CollectionsDatabase } from "../data/CollectionDatabase";
+import { CollectionInputDTO } from "../model/CollectionsArray";
+import { CollectionBusiness } from "../business/CollectionBusiness";
 
 export class ImageController {
   private static ImageBusiness = new ImageBusiness(
@@ -18,6 +21,10 @@ export class ImageController {
   private static HashtagBusiness = new HashtagBusiness(
     new HashtagDatabase(),
     new IdGenerator()
+  );
+
+  private static CollectionBusiness = new CollectionBusiness(
+    new CollectionsDatabase()
   );
 
   public async createImage(req: Request, res: Response) {
@@ -39,6 +46,8 @@ export class ImageController {
         names: tagsArray,
       };
 
+      const collectionArray: CollectionInputDTO[] = req.body.collection;
+
       const imageInput: ImageInputDTO = {
         subtitle: req.body.subtitle,
         author: req.body.author,
@@ -56,6 +65,10 @@ export class ImageController {
           await ImageController.HashtagBusiness.createHashtag(tagInput);
         }
       }
+
+      await ImageController.CollectionBusiness.createCollection(
+        collectionArray
+      );
 
       await ImageController.ImageBusiness.createImage(imageInput);
       res.status(200).send("Image created successfully");
@@ -101,6 +114,54 @@ export class ImageController {
       }
 
       const result = await ImageController.ImageBusiness.getAllImages();
+
+      if (!result) {
+        throw new NotFoundError("Feed not found");
+      }
+      res.status(200).send(result);
+    } catch (error) {
+      res.status(error.errorCode || 400).send({ message: error.message });
+    }
+  }
+
+  public async getAllImagesByDate(req: Request, res: Response) {
+    try {
+      const token = req.headers.authorization as string;
+
+      const authenticator = new Authenticator();
+      const authenticationData = authenticator.getData(token);
+
+      if (!authenticationData) {
+        throw new Error("Token unanthorized");
+      }
+
+      const result = await ImageController.ImageBusiness.getAllImagesByDate();
+
+      if (!result) {
+        throw new NotFoundError("Feed not found");
+      }
+      res.status(200).send(result);
+    } catch (error) {
+      res.status(error.errorCode || 400).send({ message: error.message });
+    }
+  }
+
+  public async getAllImagesByAuthor(req: Request, res: Response) {
+    try {
+      const token = req.headers.authorization as string;
+
+      const authenticator = new Authenticator();
+      const authenticationData = authenticator.getData(token);
+
+      if (!authenticationData) {
+        throw new Error("Token unanthorized");
+      }
+
+      const userInput: string = req.params.author;
+
+      const result = await ImageController.ImageBusiness.getAllImagesByAuthor(
+        userInput
+      );
 
       if (!result) {
         throw new NotFoundError("Feed not found");

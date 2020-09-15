@@ -46,4 +46,16 @@ export class ImageBusiness {
     const getFeed = await this.imageDatabase.getAllImages();
     return getFeed;
   }
+
+  async getAllImagesByDate() {
+    const getFeedByDate = await this.imageDatabase.getAllImagesByDate();
+    return getFeedByDate;
+  }
+
+  async getAllImagesByAuthor(author: string) {
+    const getFeedByAuthor = await this.imageDatabase.getAllImagesByAuthor(
+      author
+    );
+    return getFeedByAuthor;
+  }
 }
