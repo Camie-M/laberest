@@ -52,7 +52,6 @@ export class ImageController {
         subtitle: req.body.subtitle,
         author: req.body.author,
         file: req.body.file,
-        collection: req.body.collection,
       };
 
       /* Conferir se tag já existe */

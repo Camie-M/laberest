@@ -12,8 +12,7 @@ export class ImageDatabase extends BaseDatabase {
         dbModel.subtitle,
         dbModel.author,
         dbModel.date,
-        dbModel.file,
-        dbModel.collection
+        dbModel.file
       )
     );
   }
@@ -26,7 +25,6 @@ export class ImageDatabase extends BaseDatabase {
         author: image.getAuthor(),
         date: image.getDate(),
         file: image.getFile(),
-        collection: image.getCollection(),
       })
       .into(ImageDatabase.TABLE_NAME);
   }

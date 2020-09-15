@@ -6,8 +6,7 @@ export class Image {
     private subtitle: string,
     private author: string,
     private date: string,
-    private file: string,
-    private collection: string
+    private file: string
   ) {}
 
   getId() {
@@ -30,10 +29,6 @@ export class Image {
     return this.file;
   }
 
-  getCollection() {
-    return this.collection;
-  }
-
   setId(id: string) {
     this.id = id;
   }
@@ -54,18 +49,13 @@ export class Image {
     this.file = file;
   }
 
-  setCollection(collection: string) {
-    this.collection = collection;
-  }
-
   static toImageModel(image: any): Image {
     return new Image(
       image.id,
       image.subtitle,
       image.author,
       image.date,
-      image.file,
-      image.collection
+      image.file
     );
   }
 }
@@ -74,5 +64,4 @@ export interface ImageInputDTO {
   subtitle: string;
   author: string;
   file: string;
-  collection: string;
 }
