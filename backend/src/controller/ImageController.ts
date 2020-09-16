@@ -23,10 +23,6 @@ export class ImageController {
     new IdGenerator()
   );
 
-  private static CollectionBusiness = new CollectionBusiness(
-    new CollectionsDatabase()
-  );
-
   public async createImage(req: Request, res: Response) {
     try {
       /* Autenticação do token */
@@ -46,8 +42,6 @@ export class ImageController {
         names: tagsArray,
       };
 
-      const collectionArray: CollectionInputDTO[] = req.body.collection;
-
       const imageInput: ImageInputDTO = {
         subtitle: req.body.subtitle,
         author: req.body.author,
@@ -65,14 +59,11 @@ export class ImageController {
         }
       }
 
-      await ImageController.CollectionBusiness.createCollection(
-        collectionArray
-      );
-
       await ImageController.ImageBusiness.createImage(imageInput);
       res.status(200).send("Image created successfully");
     } catch (error) {
       res.status(error.errorCode || 400).send({ message: error.message });
+      console.log(error);
     }
   }
 
