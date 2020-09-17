@@ -4,6 +4,7 @@ import DocumentTitle from "react-document-title";
 
 import HomePage from "./HomePage/index.js";
 import SignupPage from "./SignupPage/index.js";
+import FeedPage from "./FeedPage/index";
 
 const Router = () => {
   return (
@@ -18,6 +19,12 @@ const Router = () => {
         <Route exact path="/signup">
           <DocumentTitle title="Cadastro">
             <SignupPage />
+          </DocumentTitle>
+        </Route>
+
+        <Route exact path="/feed">
+          <DocumentTitle title="Laberest">
+            <FeedPage />
           </DocumentTitle>
         </Route>
       </Switch>

@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
+import axios from "axios";
+
 import Laberest from "./../../assets/Laberest.png";
 import folderImage from "./../../assets/folderImage.svg";
 
@@ -6,12 +9,13 @@ import { FormContainer } from "./../Login/styles";
 import { HomeContainer, HomeImage } from "./../HomePage/styles";
 
 function SignupPage() {
+  let history = useHistory();
   const [name, setName] = useState("");
   const [nickname, setNickname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const baseUrl = "ec2-54-89-122-153.compute-1.amazonaws.com:3000/user/";
+  const baseUrl = "http://localhost:3003/user";
 
   const handleSignUp = async (event) => {
     event.preventDefault();
@@ -26,7 +30,7 @@ function SignupPage() {
     try {
       const response = await axios.post(`${baseUrl}/signup`, body);
       localStorage.setItem("token", response.data.token);
-      // history.push("/feed");
+      history.push("/feed");
     } catch (e) {
       alert("Falha no cadastro");
     }
@@ -37,9 +41,9 @@ function SignupPage() {
       <HomeImage src={folderImage} />
 
       <FormContainer>
-        <img src={Laberest} />
+        <img src={Laberest} alt={"Laberest Logo"} />
 
-        <form>
+        <form onSubmit={handleSignUp}>
           <label htmlFor="name">Nome</label>
           <input
             value={name}
@@ -76,7 +80,7 @@ function SignupPage() {
             onChange={(e) => setPassword(e.target.value)}
           />
 
-          <button onClick={handleSignUp}>Cadastrar</button>
+          <button>Cadastrar</button>
         </form>
       </FormContainer>
     </HomeContainer>
