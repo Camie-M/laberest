@@ -63,10 +63,6 @@ export class UserBusiness {
       throw new InvalidParameterError("Invalid password");
     }
 
-    const accessToken = this.authenticator.generateToken({
-      id: userFromDB.getId(),
-    });
-
-    return accessToken;
+    return userFromDB;
   }
 }

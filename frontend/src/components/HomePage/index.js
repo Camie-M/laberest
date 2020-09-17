@@ -8,7 +8,7 @@ import { HomeContainer, HomeImage } from "./styles.js";
 function HomePage() {
   return (
     <HomeContainer>
-      <HomeImage src={folderImage} />
+      <HomeImage src={folderImage} alt={"Pastas e coleções de imagens"} />
       <Login />
     </HomeContainer>
   );

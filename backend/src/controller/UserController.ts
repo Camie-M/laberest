@@ -37,8 +37,12 @@ export class UserController {
         password: req.body.password,
       };
 
-      const result = await UserController.UserBusiness.login(loginInput);
-      res.status(200).send(result);
+      const user = await UserController.UserBusiness.login(loginInput);
+
+      const authenticator = new Authenticator();
+      const accessToken = authenticator.generateToken({ id: user.getId() });
+
+      res.status(200).send({ token: accessToken });
     } catch (error) {
       res.status(error.errorCode || 400).send({ message: error.message });
     }

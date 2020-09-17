@@ -5,7 +5,7 @@ import axios from "axios";
 import Laberest from "./../../assets/Laberest.png";
 import { FormContainer } from "./styles.js";
 
-const baseUrl = "ec2-54-89-122-153.compute-1.amazonaws.com:3000/user/";
+const baseUrl = "http://localhost:3003/user";
 
 function Login() {
   let history = useHistory();
@@ -27,7 +27,9 @@ function Login() {
     try {
       const response = await axios.post(`${baseUrl}/login`, body);
       localStorage.setItem("token", response.data.token);
-      // history.push("/feed");
+      console.log(response.data);
+      console.log(response.data.token);
+      history.push("/feed");
     } catch (e) {
       alert("Falha no login");
     }
@@ -35,9 +37,9 @@ function Login() {
 
   return (
     <FormContainer>
-      <img src={Laberest} />
+      <img src={Laberest} alt={"Laberest Logo"} />
 
-      <form>
+      <form onSubmit={handleLogin}>
         <label htmlFor="email">E-mail</label>
         <input
           value={email}
@@ -56,7 +58,7 @@ function Login() {
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <button onClick={handleLogin}>Entrar</button>
+        <button>Entrar</button>
       </form>
       <p>
         Não tem conta? <span onClick={goToSignUpPage}>Cadastre-se!</span>

@@ -3,9 +3,12 @@ import { AddressInfo } from "net";
 import express from "express";
 import { userRouter } from "./routes/userRouter";
 import { imageRouter } from "./routes/imageRouter";
+import cors from "cors";
 
 dotenv.config();
 const app = express();
+
+app.use(cors());
 
 app.use(express.json());
 
