@@ -1,29 +1,17 @@
 import { BaseDatabase } from "./BaseDatabase";
-import { HashtagsArray } from "../model/HashtagsArray";
-import { IdGenerator } from "../services/IdGenerator";
+import { Hashtag } from "../model/Hashtag";
 
 export class HashtagDatabase extends BaseDatabase {
   private static TABLE_NAME = "LABEREST_HASHTAGS";
 
-  private toModel(dbModel?: any): HashtagsArray | undefined {
-    return dbModel && new HashtagsArray(dbModel.name);
-  }
-
-  public async createHashtag(tag: HashtagsArray): Promise<void> {
+  public async createHashtag(tag: Hashtag): Promise<void> {
     try {
-      const knex = this.getConnection();
-
-      const generateId = new IdGenerator();
-
-      const tagsArray: string[] = tag.getNames();
-
-      for (let item of tagsArray) {
-        const id = generateId.generate();
-
-        await knex
-          .insert({ id: id, name: item })
-          .into(HashtagDatabase.TABLE_NAME);
-      }
+      await this.getConnection()
+        .insert({
+          id: tag.getId(),
+          name: tag.getName(),
+        })
+        .into(HashtagDatabase.TABLE_NAME);
     } catch (error) {
       console.log(error.message);
     }
@@ -38,16 +26,16 @@ export class HashtagDatabase extends BaseDatabase {
     return result[0];
   }
 
-  public async getHashtagByName(name: string): Promise<string> {
+  public async getHashtagByName(name: string): Promise<Hashtag> {
     const result = await this.getConnection()
-      .select("name")
+      .select("*")
       .from(HashtagDatabase.TABLE_NAME)
       .where({ name });
 
     return result[0];
   }
 
-  public async getAllHashtags(): Promise<string[]> {
+  public async getAllHashtags(): Promise<Hashtag[]> {
     const result = await this.getConnection()
       .select("*")
       .from(HashtagDatabase.TABLE_NAME);

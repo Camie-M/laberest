@@ -5,21 +5,10 @@ import { ImageBusiness } from "../business/ImageBusiness";
 import { IdGenerator } from "../services/IdGenerator";
 import { Authenticator } from "../services/Authenticator";
 import { NotFoundError } from "../error/NotFoundError";
-import { HashtagsArrInputDTO } from "../model/HashtagsArray";
-import { HashtagBusiness } from "../business/HashtagBusiness";
-import { HashtagDatabase } from "../data/HashtagDatabase";
-import { CollectionsDatabase } from "../data/CollectionDatabase";
-import { CollectionInputDTO } from "../model/CollectionsArray";
-import { CollectionBusiness } from "../business/CollectionBusiness";
 
 export class ImageController {
   private static ImageBusiness = new ImageBusiness(
     new ImageDatabase(),
-    new IdGenerator()
-  );
-
-  private static HashtagBusiness = new HashtagBusiness(
-    new HashtagDatabase(),
     new IdGenerator()
   );
 
@@ -36,28 +25,12 @@ export class ImageController {
       }
 
       /* Pegar dados enviados pelo usuário */
-      const tagsArray = req.body.tags;
-
-      const tagInput: HashtagsArrInputDTO = {
-        names: tagsArray,
-      };
 
       const imageInput: ImageInputDTO = {
         subtitle: req.body.subtitle,
         author: req.body.author,
         file: req.body.file,
       };
-
-      /* Conferir se tag já existe */
-      for (let item of tagsArray) {
-        const hashtagDB = await ImageController.HashtagBusiness.getHashtagByName(
-          item
-        );
-
-        if (!hashtagDB) {
-          await ImageController.HashtagBusiness.createHashtag(tagInput);
-        }
-      }
 
       await ImageController.ImageBusiness.createImage(imageInput);
       res.status(200).send("Image created successfully");

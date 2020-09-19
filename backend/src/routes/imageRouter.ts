@@ -8,5 +8,5 @@ const imageController = new ImageController();
 imageRouter.post("/create", imageController.createImage);
 imageRouter.get("/feed", imageController.getAllImages);
 imageRouter.get("/date", imageController.getAllImagesByDate);
-imageRouter.get("/:author", imageController.getAllImagesByAuthor);
+// imageRouter.get("/:author", imageController.getAllImagesByAuthor);
 imageRouter.get("/:id", imageController.getImageById);
