@@ -1,19 +1,31 @@
-import { HashtagsArrInputDTO, HashtagsArray } from "../model/HashtagsArray";
+import { HashtagInputDTO, Hashtag } from "../model/Hashtag";
 import { HashtagDatabase } from "../data/HashtagDatabase";
+import { TagImageRelationDatabase } from "../data/TagImgRelationDatabase";
 import { IdGenerator } from "../services/IdGenerator";
 import { InvalidParameterError } from "../error/InvalidParameterError";
 
 export class HashtagBusiness {
   constructor(
     private hashtagDatabase: HashtagDatabase,
-    private idGenerator: IdGenerator
+    private idGenerator: IdGenerator,
+    private tagImageRelationDatabase: TagImageRelationDatabase
   ) {}
 
-  async createHashtag(hashtag: HashtagsArrInputDTO) {
-    if (!hashtag.names) {
+  async createHashtag(hashtag: HashtagInputDTO, imageId: string) {
+    if (!hashtag.name) {
       throw new InvalidParameterError("Missing input");
     }
-    await this.hashtagDatabase.createHashtag(new HashtagsArray(hashtag.names));
+
+    const hashtagId = this.idGenerator.generate();
+
+    await this.hashtagDatabase.createHashtag(
+      new Hashtag(hashtag.name, hashtagId)
+    );
+
+    await this.tagImageRelationDatabase.createTagImageRelation(
+      hashtagId,
+      imageId
+    );
   }
 
   async getHashtagById(id: string) {

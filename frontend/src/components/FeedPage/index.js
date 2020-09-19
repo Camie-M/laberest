@@ -30,6 +30,10 @@ function FeedPage() {
     getFeed();
   }, []);
 
+  const goToPost = (id) => {
+    history.push(`/image/${id}`);
+  };
+
   const getFeed = async () => {
     try {
       const response = await axios.get(`${baseUrl}/feed`, axiosConfig);
@@ -98,7 +102,7 @@ function FeedPage() {
         {images.map((item) => {
           return (
             <div>
-              <img src={item.file} />
+              <img src={item.file} onClick={() => goToPost(item.id)} />
               <p>{item.subtitle}</p>
             </div>
           );

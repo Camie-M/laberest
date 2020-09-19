@@ -1,39 +1,45 @@
 import { BaseDatabase } from "./BaseDatabase";
-import {
-  CollectionsArray,
-  CollectionInputDTO,
-} from "../model/CollectionsArray";
-import { IdGenerator } from "../services/IdGenerator";
+import { Collection } from "../model/Collection";
 
-export class CollectionsDatabase extends BaseDatabase {
+export class CollectionDatabase extends BaseDatabase {
   private static TABLE_NAME = "LABEREST_COLLECTIONS";
 
-  private toModel(dbModel?: any): CollectionsArray | undefined {
-    return dbModel && new CollectionsArray(dbModel.collections);
+  private toModel(dbModel?: any): Collection | undefined {
+    return (
+      dbModel &&
+      new Collection(dbModel.id, dbModel.title, dbModel.subtitle, dbModel.date)
+    );
   }
 
-  public async createCollection(collections: CollectionsArray): Promise<void> {
+  public async createCollection(collection: Collection): Promise<void> {
     try {
-      const knex = this.getConnection();
-
-      const generateId = new IdGenerator();
-
-      const collectionsArray: CollectionInputDTO[] = collections.getCollections();
-
-      for (let item of collectionsArray) {
-        const id = generateId.generate();
-
-        await knex
-          .insert({
-            id: id,
-            title: item.title,
-            subtitle: item.subtitle,
-            datetime: item.date,
-          })
-          .into(CollectionsDatabase.TABLE_NAME);
-      }
+      await this.getConnection()
+        .insert({
+          id: collection.getId(),
+          title: collection.getTitle(),
+          subtitle: collection.getSubtitle(),
+          date: collection.getDate(),
+        })
+        .into(CollectionDatabase.TABLE_NAME);
     } catch (error) {
       console.log(error.message);
     }
+  }
+
+  public async getCollectionByTitle(title: string): Promise<Collection> {
+    const result = await this.getConnection()
+      .select("*")
+      .from(CollectionDatabase.TABLE_NAME)
+      .where({ title });
+
+    return result[0];
+  }
+
+  public async getAllCollections(): Promise<Collection[]> {
+    const result = await this.getConnection()
+      .select("*")
+      .from(CollectionDatabase.TABLE_NAME);
+
+    return result;
   }
 }
